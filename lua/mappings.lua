@@ -45,8 +45,6 @@ map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope Find o
 map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Telescope Find in current buffer" })
 map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "Telescope Git commits" })
 map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "Telescope Git status" })
-map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "Telescope Pick hidden term" })
-map("n", "<leader>th", "<cmd>Telescope themes<CR>", { desc = "Telescope Nvchad themes" })
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope Find files" })
 map(
   "n",
@@ -59,18 +57,6 @@ map(
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 map("t", "<ESC>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 
-
--- toggleable
-map({ "n", "t" }, "<A-v>", "<cmd>ToggleTerm direction=vertical<CR>",
-  { desc = "Terminal Toggleable vertical term" })
-map({ "n", "t" }, "<A-h>", "<cmd>ToggleTerm direction=horizontal<CR>", { desc = "Terminal New horizontal term" })
-map({ "n", "t" }, "<A-i>", "<cmd>ToggleTerm direction=float<CR>", { desc = "Terminal Toggle Floating term" })
-
--- map("t", "<ESC>", function()
---   local win = vim.api.nvim_get_current_win()
---   vim.api.nvim_win_close(win, true)
--- end, { desc = "TerKinal Close term in terminal mode" })
---
 -- whichkey
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "Whichkey all keymaps" })
 
@@ -94,11 +80,6 @@ map("n", "<leader>cc", function()
   end
 end, { desc = "Blankline Jump to current context" })
 
---markdown
-map("i", "<>", "Markdown_Fold", { desc = "unbind" })
--- vim.api.nvim_del_keymap('', '@<Plug>Markdown_Checkbox')
--- vim.api.nvim_del_keymap('', '@<Plug>Markdown_Fold')
---
 -- tagbar
 map("n", "<C-i>", "<cmd>TagbarToggle<CR>", { desc = "Togle tagbar" })
 
