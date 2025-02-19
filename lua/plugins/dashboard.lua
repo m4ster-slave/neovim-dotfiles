@@ -4,21 +4,33 @@ return {
   config = function()
     local dashboard = require("dashboard")
     local fortune_cowsay = function()
-      local handle = io.popen "fortune /usr/share/fortune/leftist-quotes | cowsay -r "
-      if not handle then
-        return { "Error: could not run cowsay" }
+      local function get_cowsay()
+        local handle = io.popen "fortune /usr/share/fortune/leftist-quotes | cowsay -r "
+        if not handle then
+          return { "Error: could not run cowsay" }
+        end
+        local result = handle:read "*a"
+        handle:close()
+        if not result or result == "" then
+          return { "Error: cowsay returned no output" }
+        end
+        local lines = {}
+        for line in result:gmatch "[^\r\n]+" do
+          table.insert(lines, line)
+        end
+        return lines
       end
-      local result = handle:read "*a"
-      handle:close()
 
-      if not result or result == "" then
-        return { "Error: cowsay returned no output" }
-      end
+      -- Keep trying until we get output <= 22 lines
+      local attempts = 0
+      local max_attempts = 10 -- Prevent infinite loop
+      local lines
 
-      local lines = {}
-      for line in result:gmatch "[^\r\n]+" do
-        table.insert(lines, line)
-      end
+      repeat
+        lines = get_cowsay()
+        attempts = attempts + 1
+      until #lines <= 25 or attempts >= max_attempts
+
       return #lines > 0 and lines or { "Error: No header to display" }
     end
 
