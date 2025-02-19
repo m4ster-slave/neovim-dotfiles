@@ -1,0 +1,12 @@
+neovim 
+make 
+yarn
+npm 
+ctags
+ripgrep
+pdftotext
+git
+prettier
+cowsay
+fortune
+fortune-mod-leftism-git
