@@ -1,4 +1,5 @@
 neovim 
+rust
 make 
 yarn
 npm 
