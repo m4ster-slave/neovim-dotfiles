@@ -34,6 +34,7 @@ map("n", "]d", vim.diagnostic.goto_next, { desc = "Lsp next diagnostic" })
 map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Lsp diagnostic loclist" })
 
 map("n", "<leader>b", "<cmd>enew<CR>", { desc = "Buffer New" })
+map("n", "<leader>t", "<cmd>term<CR>", { desc = "new Terminal" })
 
 
 -- telescope
