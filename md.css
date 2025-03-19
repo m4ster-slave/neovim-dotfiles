@@ -387,3 +387,37 @@ main {
 }
 
 /* code coloring */
+
+@media print {
+  :root {
+    --color-text-primary: #000 !important;
+    --color-text-tertiary: #333 !important;
+    --color-bg-primary: #fff !important;
+    --color-bg-secondary: #fff !important;
+    --color-bg-tertiary: #fff !important;
+  }
+
+  .markdown-body {
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  .markdown-body pre,
+  .markdown-body code,
+  .hljs {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+
+  .markdown-body table tr,
+  .markdown-body table tr:nth-child(2n) {
+    background-color: #fff !important;
+  }
+
+  /* Force black text for all content */
+  .markdown-body * {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
