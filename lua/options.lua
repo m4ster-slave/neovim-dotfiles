@@ -15,6 +15,8 @@ o.shiftwidth = 2
 o.smartindent = true
 o.tabstop = 2
 o.softtabstop = 2
+o.linebreak = true -- Line break at word boundaries (if wrap is enabled)
+
 
 opt.fillchars = { eob = " " }
 o.ignorecase = true
@@ -61,3 +63,26 @@ vim.filetype.add {
 vim.diagnostic.config({
   virtual_text = false,
 })
+
+
+o.hlsearch = true   -- Highlight search matches
+o.incsearch = true  -- Show matches as you type (incremental search)
+o.ignorecase = true -- Case-insensitive search
+o.smartcase = true  -- Enable case-sensitive search if uppercase letters are used
+
+
+
+o.scrolloff = 8     -- Keep 8 lines visible above/below the cursor
+o.sidescrolloff = 8 -- Keep 8 columns visible to the left/right of the cursor
+
+
+o.undolevels = 1000  -- Increase undo levels to allow deeper history
+o.undoreload = 10000 -- Larger undo history when reloading files
+
+o.autoread = true    -- Automatically read files if they change outside of Vim
+
+
+-- folding workflow
+o.foldmethod = "expr"
+o.foldexpr = "nvim_treesitter#foldexpr()"
+o.foldlevel = 99

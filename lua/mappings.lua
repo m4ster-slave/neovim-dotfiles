@@ -47,6 +47,7 @@ map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = 
 map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "Telescope Git commits" })
 map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "Telescope Git status" })
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope Find files" })
+map("n", "<leader>fq", "<cmd>Telescope diagnostics<cr>", { desc = "Telescope Open Project Diagnostics" })
 map(
   "n",
   "<leader>fa",
@@ -91,3 +92,7 @@ map("n", "<leader>dr", "<cmd>DapContinue <CR>", { desc = "Start or continue the 
 -- oil
 map("n", "<leader>N", "<cmd>Oil<CR>")
 map("n", "<C-n>", '<cmd>lua require("oil").toggle_float()<CR>')
+
+
+-- go to definition stuff
+vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
