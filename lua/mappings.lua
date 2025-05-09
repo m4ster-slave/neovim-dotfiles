@@ -96,3 +96,11 @@ map("n", "<C-n>", '<cmd>lua require("oil").toggle_float()<CR>')
 
 -- go to definition stuff
 vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>lt", function()
+  local cfg = vim.diagnostic.config()
+  vim.diagnostic.config({
+    virtual_text  = not cfg.virtual_text,
+    virtual_lines = not cfg.virtual_lines,
+  })
+end, { desc = "Toggle LSP virtual lines" })
