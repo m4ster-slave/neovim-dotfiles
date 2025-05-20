@@ -13,7 +13,6 @@ return {
       require("mason-lspconfig").setup {
         ensure_installed = {
           "lua_ls",
-          "rust_analyzer",
           "gopls",
           "templ",
           "html",
@@ -188,7 +187,7 @@ return {
         -- },
       }
       lspconfig.eslint.setup {
-        capabilties = capabilities,
+        capabilities = capabilities,
       }
 
       require("lspconfig").clangd.setup {
@@ -222,16 +221,15 @@ return {
       end
 
       lspconfig.pylsp.setup {
-        capabilties = capabilities,
+        capabilities = capabilities,
         settings = {
           python = {
             pythonPath = get_python_path(),
           },
         },
       }
-
       lspconfig.marksman.setup {
-        capabilties = capabilities,
+        capabilities = capabilities,
       }
       lspconfig.jdtls.setup {
         cmd = { "jdtls" },
@@ -246,9 +244,13 @@ return {
                   path = "/usr/lib/jvm/java-23-openjdk",
                 },
                 {
+                  name = "JavaSE-21",
+                  path = "/usr/lib/jvm/java-21-openjdk",
+                  default = true,
+                },
+                {
                   name = "JavaSE-17",
                   path = "/usr/lib/jvm/java-17-openjdk",
-                  default = true,
                 },
                 {
                   name = "JavaSE-11",
@@ -259,12 +261,6 @@ return {
           },
         },
       }
-    end,
-  },
-  {
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-    config = function()
-      require("lsp_lines").setup()
     end,
   },
 }

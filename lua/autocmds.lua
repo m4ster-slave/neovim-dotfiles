@@ -69,3 +69,10 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.modifiable = true
   end,
 })
+
+
+-- Disable inline virtual text and enable virtual lines
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = true,
+})

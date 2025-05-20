@@ -6,17 +6,17 @@ return {
 
     -- Color table for highlights
     local colors = {
-      bg = "#011627",       -- Night Owl background
-      fg = "#d6deeb",       -- Night Owl foreground
-      yellow = "#ecc48d",   -- Night Owl yellow
-      cyan = "#7fdbca",     -- Night Owl cyan
+      bg = "#011627", -- Night Owl background
+      fg = "#d6deeb", -- Night Owl foreground
+      yellow = "#ecc48d", -- Night Owl yellow
+      cyan = "#7fdbca", -- Night Owl cyan
       darkblue = "#00174b", -- Night Owl darker blue
-      green = "#addb67",    -- Night Owl green
-      orange = "#f78c6c",   -- Night Owl orange
-      violet = "#c792ea",   -- Night Owl violet/purple
-      magenta = "#c792ea",  -- Night Owl magenta (similar to violet)
-      blue = "#82aaff",     -- Night Owl blue
-      red = "#ef5350",      -- Night Owl red
+      green = "#addb67", -- Night Owl green
+      orange = "#f78c6c", -- Night Owl orange
+      violet = "#c792ea", -- Night Owl violet/purple
+      magenta = "#c792ea", -- Night Owl magenta (similar to violet)
+      blue = "#82aaff", -- Night Owl blue
+      red = "#ef5350", -- Night Owl red
     }
 
     local conditions = {
@@ -139,7 +139,7 @@ return {
       function()
         local msg = "No Active Lsp"
         local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-        local clients = vim.lsp.get_active_clients()
+        local clients = vim.lsp.get_clients()
         if next(clients) == nil then
           return msg
         end
