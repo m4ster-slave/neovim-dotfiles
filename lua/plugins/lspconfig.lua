@@ -32,6 +32,7 @@ return {
           "sqlls",
           "wgsl_analyzer",
           "jdtls",
+          "tinymist",
         },
       }
     end,
@@ -46,6 +47,7 @@ return {
         capabilities = capabilities,
         cmd = { "zls" },
       }
+
       lspconfig.hls.setup {
         capabilities = capabilities,
         -- on_attach = function()

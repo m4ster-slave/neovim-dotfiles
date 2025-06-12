@@ -1,9 +1,9 @@
 local map = vim.keymap.set
 
-map('n', '<C-Up>', '<cmd>resize -2<CR>', { desc = "resize up" })
-map('n', '<C-Down>', '<cmd>resize +2<CR>', { desc = "resize down" })
-map('n', '<C-Left>', '<cmd>vertical resize -2<CR>', { desc = "resize left" })
-map('n', '<C-Right>', '<cmd>vertical resize +2<CR>', { desc = "resize right" })
+map("n", "<C-Up>", "<cmd>resize -2<CR>", { desc = "resize up" })
+map("n", "<C-Down>", "<cmd>resize +2<CR>", { desc = "resize down" })
+map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "resize left" })
+map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "resize right" })
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 
@@ -35,7 +35,6 @@ map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Lsp diagnostic loclis
 
 map("n", "<leader>b", "<cmd>enew<CR>", { desc = "Buffer New" })
 map("n", "<leader>t", "<cmd>term<CR>", { desc = "new Terminal" })
-
 
 -- telescope
 map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope Live grep" })
@@ -82,9 +81,6 @@ map("n", "<leader>cc", function()
   end
 end, { desc = "Blankline Jump to current context" })
 
--- tagbar
-map("n", "<C-i>", "<cmd>TagbarToggle<CR>", { desc = "Togle tagbar" })
-
 --debugger
 map("n", "<leader>db", "<cmd>DapToggleBreakpoint <CR>", { desc = "Toggle breakpoint" })
 map("n", "<leader>dr", "<cmd>DapContinue <CR>", { desc = "Start or continue the debugger" })
@@ -93,14 +89,16 @@ map("n", "<leader>dr", "<cmd>DapContinue <CR>", { desc = "Start or continue the 
 map("n", "<leader>N", "<cmd>Oil<CR>")
 map("n", "<C-n>", '<cmd>lua require("oil").toggle_float()<CR>')
 
-
 -- go to definition stuff
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>lt", function()
   local cfg = vim.diagnostic.config()
-  vim.diagnostic.config({
-    virtual_text  = not cfg.virtual_text,
+  vim.diagnostic.config {
+    virtual_text = not cfg.virtual_text,
     virtual_lines = not cfg.virtual_lines,
-  })
+  }
 end, { desc = "Toggle LSP virtual lines" })
+
+vim.keymap.set("n", "<leader>tpn", ":TypstPreview<CR>")
+vim.keymap.set("n", "<leader>tps", ":TypstPreviewStop<CR>")

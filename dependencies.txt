@@ -11,3 +11,5 @@ prettier
 cowsay
 fortune
 fortune-mod-leftism-git
+typst 
+tinymist

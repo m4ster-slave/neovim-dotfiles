@@ -76,3 +76,12 @@ vim.diagnostic.config({
   virtual_text = false,
   virtual_lines = true,
 })
+
+vim.cmd [[colorscheme tokyonight-moon]]
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+vim.api.nvim_set_hl(0, "ActiveWindow", { bg = "none" })
+vim.api.nvim_set_hl(0, "InactiveWindow", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+vim.api.nvim_set_hl(0, "WinSeparator", { bg = "none", fg = "none" })
