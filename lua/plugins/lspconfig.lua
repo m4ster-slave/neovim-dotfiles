@@ -40,7 +40,11 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local ok, cmp_caps = pcall(require, "cmp_nvim_lsp")
+      if ok then
+        capabilities = cmp_caps.default_capabilities(capabilities)
+      end
 
       local lspconfig = require "lspconfig"
       lspconfig.zls.setup {
@@ -105,11 +109,8 @@ return {
         filetypes = {
           "templ",
           "html",
-          "css",
           "javascriptreact",
           "typescriptreact",
-          "javascript",
-          "typescript",
           "jsx",
           "tsx",
         },
@@ -163,36 +164,17 @@ return {
         capabilities = capabilities,
         filetypes = { "templ" },
       }
-      local configs = require "lspconfig.configs"
-      if not configs.ts_ls then
-        configs.ts_ls = {
-          default_config = {
-            capabilties = capabilities,
-            filetypes = {
-              "javascript",
-              "javascriptreact",
-              "typescript",
-              "typescriptreact",
-              "html",
-            },
-          },
+      local ts = lspconfig.ts_ls or lspconfig.tsserver
+      if ts and ts.setup then
+        ts.setup {
+          capabilities = capabilities,
         }
       end
-      lspconfig.ts_ls.setup {
-        -- capabilties = capabilities,
-        -- filetypes = {
-        --   "javascript",
-        --   "javascriptreact",
-        --   "typescript",
-        --   "typescriptreact",
-        --   "html",
-        -- },
-      }
       lspconfig.eslint.setup {
         capabilities = capabilities,
       }
 
-      require("lspconfig").clangd.setup {
+  require("lspconfig").clangd.setup {
         cmd = {
           "clangd",
           "--background-index",
@@ -207,7 +189,7 @@ return {
           "--completion-style=detailed",
         },
         filetypes = { "c", "cpp", "objc", "objcpp" },
-        root_dir = require("lspconfig").util.root_pattern "src",
+  root_dir = require("lspconfig").util.root_pattern(".clangd", "compile_commands.json", ".git"),
         init_option = { fallbackFlags = { "-std=c++2a" } },
         capabilities = capabilities,
       }
@@ -259,6 +241,18 @@ return {
                   path = "/usr/lib/jvm/java-11-openjdk",
                 },
               },
+              imports = {
+                gradle = {
+                  wrapper = {
+                    checksums = {
+                      {
+                        sha256 = "7d34ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172",
+                        allowed = true
+                      }
+                    }
+                  }
+                }
+              }
             },
           },
         },

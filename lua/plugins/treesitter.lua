@@ -5,15 +5,19 @@ return {
   build = ":TSUpdate",
   opts = function()
     local opts = {
-      ensure_installed = { "lua", "luadoc", "printf", "vim", "vimdoc", "rust", "html", "bash", "css", "c", "markdown", "java" },
+      ensure_installed = {
+        "lua", "luadoc", "vim", "vimdoc",
+        "rust", "html", "bash", "css", "c", "markdown",
+        "java", "go", "javascript", "typescript", "tsx",
+        "json", "toml", "regex", "query"
+      },
 
       highlight = {
         enable = true,
         use_languagetree = true,
       },
 
-      indent = { enable = true },
-      rainbow = { enable = true },
+  indent = { enable = true },
       auto_install = true,
     }
 

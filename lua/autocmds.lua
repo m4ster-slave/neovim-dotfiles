@@ -63,12 +63,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "oil",
-  callback = function()
-    vim.bo.modifiable = true
-  end,
-})
 
 
 -- Disable inline virtual text and enable virtual lines

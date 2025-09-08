@@ -3,7 +3,7 @@ return {
     "chomosuke/typst-preview.nvim",
     lazy = false, -- or ft = 'typst'
     version = "1.*",
-    opts = {},
+  opts = {},
     require("lspconfig").tinymist.setup {
       settings = {
         exportPdf = "onSave",

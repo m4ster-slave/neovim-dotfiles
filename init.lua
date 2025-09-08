@@ -1,3 +1,4 @@
+vim.loader.enable()
 vim.g.mapleader = " "
 
 -- bootstrap lazy and all plugins
@@ -22,5 +23,4 @@ require "options"
 
 vim.schedule(function()
   require "mappings"
-  require "cmp"
 end)

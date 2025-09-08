@@ -65,6 +65,24 @@ map("n", "<leader>wk", function()
   vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
 end, { desc = "Whichkey query lookup" })
 
+-- Toggle LSP inlay hints (Neovim >= 0.10)
+map("n", "<leader>uh", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local api = vim.lsp.inlay_hint
+  local enabled = false
+  if api and api.is_enabled then
+    enabled = api.is_enabled(bufnr)
+  elseif api and api.is_enabled then
+    enabled = api.is_enabled(bufnr)
+  end
+  if api and api.enable then
+    api.enable(bufnr, not enabled)
+  elseif api then
+    -- older API shim
+    api(bufnr, not enabled)
+  end
+end, { desc = "Toggle Inlay Hints" })
+
 -- blankline
 map("n", "<leader>cc", function()
   local config = { scope = {} }

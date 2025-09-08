@@ -12,7 +12,7 @@ return {
       json = { "prettier" },
       javascript = { "prettier" },
       typescript = { "prettier" },
-      python = { "prettier" },
+      python = { "ruff_format" },
     },
     format_on_save = {
       -- These options will be passed to conform.format()

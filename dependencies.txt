@@ -8,6 +8,8 @@ ripgrep
 pdftotext
 git
 prettier
+stylua
+ruff
 cowsay
 fortune
 fortune-mod-leftism-git
