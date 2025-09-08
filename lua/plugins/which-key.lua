@@ -3,6 +3,6 @@ return {
   event = "VeryLazy",
   opts = {
     plugins = { spelling = true },
-    window = { border = "single" },
+    win = { border = "single" },
   },
 }

@@ -79,3 +79,18 @@ vim.api.nvim_set_hl(0, "ActiveWindow", { bg = "none" })
 vim.api.nvim_set_hl(0, "InactiveWindow", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 vim.api.nvim_set_hl(0, "WinSeparator", { bg = "none", fg = "none" })
+
+
+-- automatically get template when going into a empty .typ file
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
+  pattern = "*.typ",
+  callback = function()
+    -- only insert if buffer is empty
+    if vim.fn.line("$") == 1 and vim.fn.getline(1) == "" then
+      local template = vim.fn.expand("~/.config/nvim/templates/template.typ")
+      if vim.fn.filereadable(template) == 1 then
+        vim.cmd("0r " .. template)
+      end
+    end
+  end,
+})
