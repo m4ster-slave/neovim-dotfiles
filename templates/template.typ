@@ -1,5 +1,5 @@
 #set document(
-  title: [DHCP, DNS, NAS - Lernblatt],
+  title: [Template],
   author: "Lukas Weger",
 )
 
@@ -12,7 +12,8 @@
     gutter: 355pt,
     [#align(left)[#text(size: 10pt, "Lukas Weger")]], 
     [#align(right)[#text(size: 10pt, datetime.today().display())]]
-  )
+  ),
+  margin: (x: 24pt, y: auto),
 )
 
 #set text(slashed-zero: true, ligatures: true)
