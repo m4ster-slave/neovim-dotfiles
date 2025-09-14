@@ -33,6 +33,7 @@ return {
           "wgsl_analyzer",
           "jdtls",
           "tinymist",
+          "intelephense",
         },
       }
     end,
@@ -101,6 +102,12 @@ return {
       lspconfig.prismals.setup {
         capabilities = capabilities,
       }
+      lspconfig.intelephense.setup {
+        capabilities = capabilities,
+        init_option = {
+          globalStoragePath = "/tmp/", -- i dont need this shit in my home dir
+        }
+      }
       lspconfig.yamlls.setup {
         capabilities = capabilities,
       }
@@ -113,6 +120,7 @@ return {
           "typescriptreact",
           "jsx",
           "tsx",
+          "php",
         },
       }
       lspconfig.htmx.setup {
@@ -131,6 +139,7 @@ return {
           "typescript",
           "jsx",
           "tsx",
+          "php",
         },
       }
       lspconfig.tailwindcss.setup {
@@ -174,7 +183,7 @@ return {
         capabilities = capabilities,
       }
 
-  require("lspconfig").clangd.setup {
+      require("lspconfig").clangd.setup {
         cmd = {
           "clangd",
           "--background-index",
@@ -189,7 +198,7 @@ return {
           "--completion-style=detailed",
         },
         filetypes = { "c", "cpp", "objc", "objcpp" },
-  root_dir = require("lspconfig").util.root_pattern(".clangd", "compile_commands.json", ".git"),
+        root_dir = require("lspconfig").util.root_pattern(".clangd", "compile_commands.json", ".git"),
         init_option = { fallbackFlags = { "-std=c++2a" } },
         capabilities = capabilities,
       }

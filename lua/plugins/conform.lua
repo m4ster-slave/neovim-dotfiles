@@ -13,6 +13,7 @@ return {
       javascript = { "prettier" },
       typescript = { "prettier" },
       python = { "ruff_format" },
+      php = { "php_cs_fixer", "phpcbf" },
     },
     format_on_save = {
       -- These options will be passed to conform.format()

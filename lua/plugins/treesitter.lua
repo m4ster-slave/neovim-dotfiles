@@ -9,7 +9,8 @@ return {
         "lua", "luadoc", "vim", "vimdoc",
         "rust", "html", "bash", "css", "c", "markdown",
         "java", "go", "javascript", "typescript", "tsx",
-        "json", "toml", "regex", "query"
+        "json", "toml", "regex", "query",
+        "php", "phpdoc"
       },
 
       highlight = {

@@ -15,3 +15,7 @@ fortune
 fortune-mod-leftism-git
 typst 
 tinymist
+php
+composer
+intelephense
+php-cs-fixer
