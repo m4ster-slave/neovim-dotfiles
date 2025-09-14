@@ -119,3 +119,10 @@ end, { desc = "Toggle LSP virtual lines" })
 
 vim.keymap.set("n", "<leader>tpn", ":TypstPreview<CR>")
 vim.keymap.set("n", "<leader>tps", ":TypstPreviewStop<CR>")
+
+
+
+-- tab navigation
+map("n", "<C-j>", "<cmd>tabprevious<CR>")
+map("n", "<C-k>", "<cmd>tabnext<CR>")
+map("n", "<leader>n", "<cmd>tabnew<CR>")
