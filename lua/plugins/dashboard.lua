@@ -43,7 +43,7 @@ return {
             icon = '󰑴 ',
             desc = 'School',
             key = 'School Notes',
-            action = 'cd ~/Nextcloud/Notes/School/2024-25/'
+            action = 'cd ~/Nextcloud/Notes/School/2025-26/'
           },
           {
             icon = '󰙨 ',
