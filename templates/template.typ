@@ -9,7 +9,7 @@
   header: grid(
     columns: 2,
     rows: 1,
-    gutter: 355pt,
+    gutter: 450pt,
     [#align(left)[#text(size: 10pt, "Lukas Weger")]], 
     [#align(right)[#text(size: 10pt, datetime.today().display())]]
   ),

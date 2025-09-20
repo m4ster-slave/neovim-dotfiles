@@ -47,7 +47,7 @@ return {
         capabilities = cmp_caps.default_capabilities(capabilities)
       end
 
-      local lspconfig = require "lspconfig"
+      local lspconfig = require("lspconfig")
       lspconfig.zls.setup {
         capabilities = capabilities,
         cmd = { "zls" },
@@ -155,7 +155,7 @@ return {
           "jsx",
           "tsx",
         },
-        root_dir = require("lspconfig").util.root_pattern(
+        root_dir = lspconfig.util.root_pattern(
           "tailwind.config.js",
           "tailwind.config.cjs",
           "tailwind.config.mjs",
@@ -183,7 +183,7 @@ return {
         capabilities = capabilities,
       }
 
-      require("lspconfig").clangd.setup {
+      lspconfig.clangd.setup {
         cmd = {
           "clangd",
           "--background-index",
@@ -198,7 +198,7 @@ return {
           "--completion-style=detailed",
         },
         filetypes = { "c", "cpp", "objc", "objcpp" },
-        root_dir = require("lspconfig").util.root_pattern(".clangd", "compile_commands.json", ".git"),
+        root_dir = lspconfig.util.root_pattern(".clangd", "compile_commands.json", ".git"),
         init_option = { fallbackFlags = { "-std=c++2a" } },
         capabilities = capabilities,
       }
@@ -226,7 +226,7 @@ return {
       }
       lspconfig.jdtls.setup {
         cmd = { "jdtls" },
-        root_dir = require("lspconfig").util.root_pattern(".git", "build.gradle", "pom.xml"),
+        root_dir = lspconfig.util.root_pattern(".git", "build.gradle", "pom.xml"),
         settings = {
           java = {
             home = "~/.local/share/nvim/java/",

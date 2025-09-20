@@ -123,6 +123,21 @@ vim.keymap.set("n", "<leader>tps", ":TypstPreviewStop<CR>")
 
 
 -- tab navigation
-map("n", "<C-j>", "<cmd>tabprevious<CR>")
-map("n", "<C-k>", "<cmd>tabnext<CR>")
+map("n", "<leader>j", "<cmd>tabprevious<CR>")
+map("n", "<leader>k", "<cmd>tabnext<CR>")
 map("n", "<leader>n", "<cmd>tabnew<CR>")
+
+
+-- load the session for the current directory
+map("n", "<leader>qs", function() require("persistence").load() end)
+
+map("n", "<leader>qS", ":SelectSession<CR>",
+  { desc = "Pick persistence session" })
+
+
+
+-- load the last session
+map("n", "<leader>ql", function() require("persistence").load({ last = true }) end)
+
+-- stop Persistence => session won't be saved on exit
+map("n", "<leader>qd", function() require("persistence").stop() end)
