@@ -31,7 +31,6 @@ return {
           "marksman",
           "sqlls",
           "wgsl_analyzer",
-          "jdtls",
           "tinymist",
           "intelephense",
           "csharp_ls",
@@ -147,32 +146,6 @@ return {
           },
         },
         marksman = with_capabilities {},
-        jdtls = with_capabilities {
-          cmd = { "jdtls" },
-          root_dir = util.root_pattern(".git", "build.gradle", "pom.xml"),
-          settings = {
-            java = {
-              home = "~/.local/share/nvim/java/",
-              configuration = {
-                runtimes = {
-                  { name = "JavaSE-23", path = "/usr/lib/jvm/java-23-openjdk" },
-                  { name = "JavaSE-21", path = "/usr/lib/jvm/java-21-openjdk", default = true },
-                  { name = "JavaSE-17", path = "/usr/lib/jvm/java-17-openjdk" },
-                  { name = "JavaSE-11", path = "/usr/lib/jvm/java-11-openjdk" },
-                },
-                imports = {
-                  gradle = {
-                    wrapper = {
-                      checksums = {
-                        { sha256 = "7d34ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172", allowed = true },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
         csharp_ls = with_capabilities {
           root_dir = util.root_pattern("*.sln", "*.csproj", ".git"),
         },
