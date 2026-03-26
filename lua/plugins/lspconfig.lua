@@ -144,7 +144,6 @@ return {
             return util.root_pattern(".clangd", "compile_commands.json", ".git")(fname)
               or util.path.dirname(fname)
           end,
-          init_options = { fallbackFlags = { "-std=c++2a" } },
         },
         pylsp = with_capabilities {
           settings = {
@@ -158,9 +157,26 @@ return {
       }
 
       for name, cfg in pairs(servers) do
-        lsp.config[name] = vim.tbl_deep_extend("force", lsp.config[name] or {}, cfg)
-        lsp.enable(name)
+        lsp.config(name, cfg)
+        local ok_enable, err = pcall(lsp.enable, name)
+        if not ok_enable then
+          vim.schedule(function()
+            vim.notify(string.format("Skipping LSP '%s': %s", name, err), vim.log.levels.WARN)
+          end)
+        end
       end
+
+      -- Ensure clangd starts for C-family buffers even if initial LSP autostart misses the first file.
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "c", "cpp", "objc", "objcpp" },
+        callback = function(args)
+          local bufnr = args.buf
+          if #lsp.get_clients { bufnr = bufnr, name = "clangd" } > 0 then
+            return
+          end
+          lsp.start(vim.tbl_extend("force", {}, lsp.config.clangd or {}, { bufnr = bufnr }))
+        end,
+      })
     end,
   },
 }
