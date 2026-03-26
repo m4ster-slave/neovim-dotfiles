@@ -1,6 +1,13 @@
 return {
   "stevearc/conform.nvim",
   opts = {
+    formatters = {
+      ["clang-format"] = {
+        prepend_args = {
+          "--style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, UseTab: Never}",
+        },
+      },
+    },
     formatters_by_ft = {
       lua = { "stylua" },
       c = { "clang-format" },
