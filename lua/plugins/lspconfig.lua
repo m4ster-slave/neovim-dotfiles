@@ -1,6 +1,7 @@
 return {
   {
     "williamboman/mason.nvim",
+    lazy = false,
     config = function()
       require("mason").setup {
         PATH = "prepend",
@@ -9,6 +10,7 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
+    lazy = false,
     config = function()
       require("mason-lspconfig").setup {
         ensure_installed = {
@@ -40,6 +42,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       local ok, cmp_caps = pcall(require, "cmp_nvim_lsp")
@@ -137,7 +140,10 @@ return {
             "--completion-style=detailed",
           },
           filetypes = { "c", "cpp", "objc", "objcpp" },
-          root_dir = util.root_pattern(".clangd", "compile_commands.json", ".git"),
+          root_dir = function(fname)
+            return util.root_pattern(".clangd", "compile_commands.json", ".git")(fname)
+              or util.path.dirname(fname)
+          end,
           init_options = { fallbackFlags = { "-std=c++2a" } },
         },
         pylsp = with_capabilities {
