@@ -1,6 +1,7 @@
 return {
   {
     "williamboman/mason.nvim",
+    lazy = false,
     config = function()
       require("mason").setup {
         PATH = "prepend",
@@ -9,6 +10,7 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
+    lazy = false,
     config = function()
       require("mason-lspconfig").setup {
         ensure_installed = {
@@ -31,7 +33,6 @@ return {
           "marksman",
           "sqlls",
           "wgsl_analyzer",
-          "jdtls",
           "tinymist",
           "intelephense",
           "csharp_ls",
@@ -41,6 +42,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       local ok, cmp_caps = pcall(require, "cmp_nvim_lsp")
@@ -138,8 +140,10 @@ return {
             "--completion-style=detailed",
           },
           filetypes = { "c", "cpp", "objc", "objcpp" },
-          root_dir = util.root_pattern(".clangd", "compile_commands.json", ".git"),
-          init_options = { fallbackFlags = { "-std=c++2a" } },
+          root_dir = function(fname)
+            return util.root_pattern(".clangd", "compile_commands.json", ".git")(fname)
+              or util.path.dirname(fname)
+          end,
         },
         pylsp = with_capabilities {
           settings = {
@@ -147,41 +151,32 @@ return {
           },
         },
         marksman = with_capabilities {},
-        jdtls = with_capabilities {
-          cmd = { "jdtls" },
-          root_dir = util.root_pattern(".git", "build.gradle", "pom.xml"),
-          settings = {
-            java = {
-              home = "~/.local/share/nvim/java/",
-              configuration = {
-                runtimes = {
-                  { name = "JavaSE-23", path = "/usr/lib/jvm/java-23-openjdk" },
-                  { name = "JavaSE-21", path = "/usr/lib/jvm/java-21-openjdk", default = true },
-                  { name = "JavaSE-17", path = "/usr/lib/jvm/java-17-openjdk" },
-                  { name = "JavaSE-11", path = "/usr/lib/jvm/java-11-openjdk" },
-                },
-                imports = {
-                  gradle = {
-                    wrapper = {
-                      checksums = {
-                        { sha256 = "7d34ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172", allowed = true },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
         csharp_ls = with_capabilities {
           root_dir = util.root_pattern("*.sln", "*.csproj", ".git"),
         },
       }
 
       for name, cfg in pairs(servers) do
-        lsp.config[name] = vim.tbl_deep_extend("force", lsp.config[name] or {}, cfg)
-        lsp.enable(name)
+        lsp.config(name, cfg)
+        local ok_enable, err = pcall(lsp.enable, name)
+        if not ok_enable then
+          vim.schedule(function()
+            vim.notify(string.format("Skipping LSP '%s': %s", name, err), vim.log.levels.WARN)
+          end)
+        end
       end
+
+      -- Ensure clangd starts for C-family buffers even if initial LSP autostart misses the first file.
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "c", "cpp", "objc", "objcpp" },
+        callback = function(args)
+          local bufnr = args.buf
+          if #lsp.get_clients { bufnr = bufnr, name = "clangd" } > 0 then
+            return
+          end
+          lsp.start(vim.tbl_extend("force", {}, lsp.config.clangd or {}, { bufnr = bufnr }))
+        end,
+      })
     end,
   },
 }
