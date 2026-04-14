@@ -27,6 +27,16 @@ map("n", "<leader>fm", function()
   require("conform").format { lsp_fallback = true }
 end, { desc = "Format Files" })
 
+map("n", "<leader>tf", function()
+  if vim.g.format_on_save == false then
+    vim.g.format_on_save = true
+    vim.notify("Format on save enabled", vim.log.levels.INFO)
+  else
+    vim.g.format_on_save = false
+    vim.notify("Format on save disabled", vim.log.levels.INFO)
+  end
+end, { desc = "Toggle format on save" })
+
 -- global lsp mappings
 map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Lsp floating diagnostics" })
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Lsp prev diagnostic" })

@@ -15,10 +15,11 @@ return {
       python = { "ruff_format" },
       php = { "php_cs_fixer", "phpcbf" },
     },
-    format_on_save = {
-      -- These options will be passed to conform.format()
-      timeout_ms = 500,
-      lsp_fallback = true,
-    },
+    format_on_save = function()
+      if vim.g.format_on_save == false then
+        return nil
+      end
+      return { timeout_ms = 500, lsp_fallback = true }
+    end,
   },
 }
