@@ -52,7 +52,17 @@ vim.g["loaded_ruby_provider"] = 0
 
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.fn.has "win32" ~= 0
-vim.env.PATH = vim.fn.stdpath "data" .. "/mason/bin" .. (is_windows and ";" or ":") .. vim.env.PATH
+local path_sep = is_windows and ";" or ":"
+local extra_paths = {
+  vim.fn.stdpath "data" .. "/mason/bin",
+  vim.fn.expand "~/.cargo/bin",
+}
+
+for _, path in ipairs(extra_paths) do
+  if vim.fn.isdirectory(path) == 1 and not vim.env.PATH:find(vim.pesc(path), 1, true) then
+    vim.env.PATH = path .. path_sep .. vim.env.PATH
+  end
+end
 
 vim.filetype.add {
   extension = {

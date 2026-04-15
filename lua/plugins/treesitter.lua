@@ -14,7 +14,7 @@ return {
 
     return {
       ensure_installed = ensure_installed,
-      auto_install = false,
+      auto_install = true,
       highlight = { enable = true },
       indent = { enable = true },
       install_dir = vim.fn.stdpath("data") .. "/site",
