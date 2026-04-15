@@ -3,6 +3,27 @@ return {
   event = "VimEnter",
   config = function()
     local dashboard = require("dashboard")
+    local function resolve_first_dir(candidates)
+      for _, path in ipairs(candidates) do
+        local expanded = vim.fn.expand(path)
+        if vim.fn.isdirectory(expanded) == 1 then
+          return expanded
+        end
+      end
+    end
+
+    local function cd_action(candidates)
+      return function()
+        local dir = resolve_first_dir(candidates)
+        if not dir then
+          vim.notify("Dashboard directory not found", vim.log.levels.WARN)
+          return
+        end
+
+        vim.cmd.cd(vim.fn.fnameescape(dir))
+      end
+    end
+
     local fortune_cowsay = function()
       local function get_cowsay()
         local handle = io.popen "fortune /usr/share/fortune/leftist-quotes | cowsay -r "
@@ -43,13 +64,21 @@ return {
             icon = '󰑴 ',
             desc = 'School',
             key = 'School Notes',
-            action = 'cd ~/Nextcloud/Notes/School/2025-26/'
+            action = cd_action({
+              "~/Nextcloud/Notes/School/2025-26/",
+              "~/Nextcloud/Notes/School/",
+              "~/Nextcloud/Notes/",
+            }),
           },
           {
             icon = '󰙨 ',
             desc = 'Projects',
             key = 'Projects Folder',
-            action = 'cd ~/Nextcloud/Projects/'
+            action = cd_action({
+              "~/Nextcloud/Projects/",
+              "~/Projects/",
+              "~",
+            }),
           },
           {
             icon = ' ',

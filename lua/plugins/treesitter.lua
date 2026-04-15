@@ -1,31 +1,35 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPost", "BufNewFile" },
-  cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+  lazy = false,
+  cmd = { "TSInstall", "TSInstallFromGrammar", "TSUpdate" },
   build = ":TSUpdate",
   opts = function()
-    local opts = {
-      ensure_installed = {
-        "lua", "luadoc", "vim", "vimdoc",
-        "rust", "html", "bash", "css", "c", "markdown",
-        "java", "go", "javascript", "typescript", "tsx",
-        "json", "toml", "regex", "query",
-        "php", "phpdoc"
-      },
-
-      highlight = {
-        enable = true,
-        use_languagetree = true,
-      },
-
-  indent = { enable = true },
-      auto_install = true,
+    local ensure_installed = {
+      "lua", "luadoc", "vim", "vimdoc",
+      "rust", "html", "bash", "css", "c", "markdown",
+      "java", "go", "javascript", "typescript", "tsx",
+      "json", "toml", "regex", "query",
+      "php", "phpdoc",
     }
 
-    return opts
+    return {
+      ensure_installed = ensure_installed,
+      auto_install = false,
+      highlight = { enable = true },
+      indent = { enable = true },
+      install_dir = vim.fn.stdpath("data") .. "/site",
+    }
   end,
 
   config = function(_, opts)
-    require("nvim-treesitter.configs").setup(opts)
+    require("nvim-treesitter").setup(opts)
+
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function(args)
+        if pcall(vim.treesitter.start, args.buf) then
+          vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
+      end,
+    })
   end,
 }

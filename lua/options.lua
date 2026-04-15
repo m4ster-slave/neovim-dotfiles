@@ -84,5 +84,5 @@ o.autoread = true    -- Automatically read files if they change outside of Vim
 
 -- folding workflow
 o.foldmethod = "expr"
-o.foldexpr = "nvim_treesitter#foldexpr()"
+o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 o.foldlevel = 99
