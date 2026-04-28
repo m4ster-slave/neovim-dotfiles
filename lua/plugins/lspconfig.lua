@@ -11,6 +11,7 @@ return {
   {
     "williamboman/mason-lspconfig.nvim",
     lazy = false,
+    dependencies = { "neovim/nvim-lspconfig" },
     config = function()
       require("mason-lspconfig").setup {
         ensure_installed = {
@@ -31,11 +32,14 @@ return {
           "eslint",
           "zls",
           "marksman",
-          "sqlls",
+          "sqls",
           "wgsl_analyzer",
           "tinymist",
           "intelephense",
           "csharp_ls",
+          "jdtls",
+          "rust_analyzer",
+          "hls",
         },
       }
     end,
@@ -50,8 +54,9 @@ return {
         capabilities = cmp_caps.default_capabilities(capabilities)
       end
 
-      local util = require("lspconfig.util")
-      local lsp = vim.lsp
+      local function root_dir(fname, patterns)
+        return vim.fs.root(fname, patterns) or vim.fs.dirname(fname)
+      end
 
       local function with_capabilities(cfg)
         cfg.capabilities = vim.tbl_deep_extend("force", {}, capabilities, cfg.capabilities or {})
@@ -108,19 +113,21 @@ return {
         },
         tailwindcss = with_capabilities {
           filetypes = { "templ", "html", "css", "javascriptreact", "typescriptreact", "javascript", "typescript", "jsx", "tsx" },
-          root_dir = util.root_pattern(
-            "tailwind.config.js",
-            "tailwind.config.cjs",
-            "tailwind.config.mjs",
-            "tailwind.config.ts",
-            "postcss.config.js",
-            "postcss.config.cjs",
-            "postcss.config.mjs",
-            "postcss.config.ts",
-            "package.json",
-            "node_modules",
-            ".git"
-          ),
+          root_dir = function(fname)
+            return root_dir(fname, {
+              "tailwind.config.js",
+              "tailwind.config.cjs",
+              "tailwind.config.mjs",
+              "tailwind.config.ts",
+              "postcss.config.js",
+              "postcss.config.cjs",
+              "postcss.config.mjs",
+              "postcss.config.ts",
+              "package.json",
+              "node_modules",
+              ".git",
+            })
+          end,
         },
         templ = with_capabilities { filetypes = { "templ" } },
         ts_ls = with_capabilities {},
@@ -141,8 +148,7 @@ return {
           },
           filetypes = { "c", "cpp", "objc", "objcpp" },
           root_dir = function(fname)
-            return util.root_pattern(".clangd", "compile_commands.json", ".git")(fname)
-              or util.path.dirname(fname)
+            return root_dir(fname, { ".clangd", "compile_commands.json", ".git" })
           end,
         },
         pylsp = with_capabilities {
@@ -151,14 +157,28 @@ return {
           },
         },
         marksman = with_capabilities {},
+        sqls = with_capabilities {},
         csharp_ls = with_capabilities {
-          root_dir = util.root_pattern("*.sln", "*.csproj", ".git"),
+          root_dir = function(fname)
+            return root_dir(fname, { "*.sln", "*.csproj", ".git" })
+          end,
+        },
+        jdtls = with_capabilities {
+          root_dir = function(fname)
+            return root_dir(fname, { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" })
+          end,
+        },
+        tinymist = with_capabilities {
+          settings = {
+            exportPdf = "onSave",
+            outputPath = "$root/$name",
+          },
         },
       }
 
       for name, cfg in pairs(servers) do
-        lsp.config(name, cfg)
-        local ok_enable, err = pcall(lsp.enable, name)
+        vim.lsp.config(name, cfg)
+        local ok_enable, err = pcall(vim.lsp.enable, name)
         if not ok_enable then
           vim.schedule(function()
             vim.notify(string.format("Skipping LSP '%s': %s", name, err), vim.log.levels.WARN)
@@ -166,17 +186,21 @@ return {
         end
       end
 
-      -- Ensure clangd starts for C-family buffers even if initial LSP autostart misses the first file.
+      -- Fallback: ensure clangd attaches when opening C-family files.
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "c", "cpp", "objc", "objcpp" },
         callback = function(args)
-          local bufnr = args.buf
-          if #lsp.get_clients { bufnr = bufnr, name = "clangd" } > 0 then
+          if #vim.lsp.get_clients { bufnr = args.buf, name = "clangd" } > 0 then
             return
           end
-          lsp.start(vim.tbl_extend("force", {}, lsp.config.clangd or {}, { bufnr = bufnr }))
+          local clangd_cfg = servers.clangd
+          if not clangd_cfg then
+            return
+          end
+          vim.lsp.start(vim.tbl_deep_extend("force", {}, clangd_cfg, { bufnr = args.buf }))
         end,
       })
+
     end,
   },
 }

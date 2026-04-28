@@ -1,7 +1,11 @@
 return {
   {
-    "ixru/nvim-markdown",
-    lazy = false,
+    -- Replaced ixru/nvim-markdown (unmaintained) with markdown.nvim (maintained).
+    "tadmccorkle/markdown.nvim",
+    ft = { "markdown" },
+    opts = {
+      -- Keep defaults; this plugin mainly provides syntax and conveniences.
+    },
   },
   {
     "iamcco/markdown-preview.nvim",
@@ -21,13 +25,13 @@ return {
     end,
   },
   {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-    ---@module 'render-markdown'
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    ---@module "render-markdown"
     ---@type render.md.UserConfig
     opts = {
       heading = {
-        width = 'block',
+        width = "block",
         left_pad = 2,
         right_pad = 4,
       },
