@@ -1,107 +1,114 @@
-return {
+local M = {}
+
+M.plugins = {
   "nvimdev/dashboard-nvim",
-  event = "VimEnter",
-  config = function()
-    local dashboard = require("dashboard")
-    local function resolve_first_dir(candidates)
-      for _, path in ipairs(candidates) do
-        local expanded = vim.fn.expand(path)
-        if vim.fn.isdirectory(expanded) == 1 then
-          return expanded
-        end
-      end
-    end
-
-    local function cd_action(candidates)
-      return function()
-        local dir = resolve_first_dir(candidates)
-        if not dir then
-          vim.notify("Dashboard directory not found", vim.log.levels.WARN)
-          return
-        end
-
-        vim.cmd.cd(vim.fn.fnameescape(dir))
-      end
-    end
-
-    local fortune_cowsay = function()
-      local function get_cowsay()
-        local handle = io.popen "fortune /usr/share/fortune/leftist-quotes | cowsay -r "
-        if not handle then
-          return { "Error: could not run cowsay" }
-        end
-        local result = handle:read "*a"
-        handle:close()
-        if not result or result == "" then
-          return { "Error: cowsay returned no output" }
-        end
-        local lines = {}
-        for line in result:gmatch "[^\r\n]+" do
-          table.insert(lines, line)
-        end
-        return lines
-      end
-
-      -- Keep trying until we get output <= 22 lines
-      local attempts = 0
-      local max_attempts = 10 -- Prevent infinite loop
-      local lines
-
-      repeat
-        lines = get_cowsay()
-        attempts = attempts + 1
-      until #lines <= 25 or attempts >= max_attempts
-
-      return #lines > 0 and lines or { "Error: No header to display" }
-    end
-
-    dashboard.setup({
-      theme = 'doom',
-      config = {
-        header = fortune_cowsay(),
-        center = {
-          {
-            icon = '󰑴 ',
-            desc = 'School',
-            key = 'School Notes',
-            action = cd_action({
-              "~/Nextcloud/Notes/School/2025-26/",
-              "~/Nextcloud/Notes/School/",
-              "~/Nextcloud/Notes/",
-            }),
-          },
-          {
-            icon = '󰙨 ',
-            desc = 'Projects',
-            key = 'Projects Folder',
-            action = cd_action({
-              "~/Nextcloud/Projects/",
-              "~/Projects/",
-              "~",
-            }),
-          },
-          {
-            icon = ' ',
-            desc = 'Find File',
-            key = 'Spc f f',
-            action = 'Telescope find_files'
-          },
-          {
-            icon = '󰈚 ',
-            desc = 'Recent Files',
-            key = 'Spc f o',
-            action = 'Telescope oldfiles'
-          },
-          {
-            icon = '󰈭 ',
-            desc = 'Find Word',
-            key = 'Spc f w',
-            action = 'Telescope live_grep'
-          },
-        },
-        footer = {}
-      }
-    })
-  end,
-  dependencies = { { "nvim-tree/nvim-web-devicons" } }
 }
+
+function M.setup()
+  vim.api.nvim_create_autocmd("VimEnter", {
+    callback = function()
+      local dashboard = require("dashboard")
+      local function resolve_first_dir(candidates)
+        for _, path in ipairs(candidates) do
+          local expanded = vim.fn.expand(path)
+          if vim.fn.isdirectory(expanded) == 1 then
+            return expanded
+          end
+        end
+      end
+
+      local function cd_action(candidates)
+        return function()
+          local dir = resolve_first_dir(candidates)
+          if not dir then
+            vim.notify("Dashboard directory not found", vim.log.levels.WARN)
+            return
+          end
+
+          vim.cmd.cd(vim.fn.fnameescape(dir))
+        end
+      end
+
+      local fortune_cowsay = function()
+        local function get_cowsay()
+          local handle = io.popen "fortune /usr/share/fortune/leftist-quotes | cowsay -r "
+          if not handle then
+            return { "Error: could not run cowsay" }
+          end
+          local result = handle:read "*a"
+          handle:close()
+          if not result or result == "" then
+            return { "Error: cowsay returned no output" }
+          end
+          local lines = {}
+          for line in result:gmatch "[^\r\n]+" do
+            table.insert(lines, line)
+          end
+          return lines
+        end
+
+        -- Keep trying until we get output <= 25 lines
+        local attempts = 0
+        local max_attempts = 10 -- Prevent infinite loop
+        local lines
+
+        repeat
+          lines = get_cowsay()
+          attempts = attempts + 1
+        until #lines <= 25 or attempts >= max_attempts
+
+        return #lines > 0 and lines or { "Error: No header to display" }
+      end
+
+      dashboard.setup({
+        theme = "doom",
+        config = {
+          header = fortune_cowsay(),
+          center = {
+            {
+              icon = "󰑴 ",
+              desc = "School",
+              key = "School Notes",
+              action = cd_action({
+                "~/Nextcloud/Notes/School/2025-26/",
+                "~/Nextcloud/Notes/School/",
+                "~/Nextcloud/Notes/",
+              }),
+            },
+            {
+              icon = "󰙨 ",
+              desc = "Projects",
+              key = "Projects Folder",
+              action = cd_action({
+                "~/Nextcloud/Projects/",
+                "~/Projects/",
+                "~",
+              }),
+            },
+            {
+              icon = " ",
+              desc = "Find File",
+              key = "Spc f f",
+              action = "Telescope find_files",
+            },
+            {
+              icon = "󰈚 ",
+              desc = "Recent Files",
+              key = "Spc f o",
+              action = "Telescope oldfiles",
+            },
+            {
+              icon = "󰈭 ",
+              desc = "Find Word",
+              key = "Spc f w",
+              action = "Telescope live_grep",
+            },
+          },
+          footer = {},
+        },
+      })
+    end,
+  })
+end
+
+return M

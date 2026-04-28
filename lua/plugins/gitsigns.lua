@@ -1,14 +1,16 @@
-return {
-  "lewis6991/gitsigns.nvim",
-  event = "User FilePost",
-  opts = function()
-    local opts = {
-      signs = {
-        delete = { text = "󰍵" },
-        changedelete = { text = "󱕖" },
-      },
-    }
+local M = {}
 
-    return opts
-  end,
+M.plugins = {
+  "lewis6991/gitsigns.nvim",
 }
+
+function M.setup()
+  require("gitsigns").setup {
+    signs = {
+      delete = { text = "󰍵" },
+      changedelete = { text = "󱕖" },
+    },
+  }
+end
+
+return M

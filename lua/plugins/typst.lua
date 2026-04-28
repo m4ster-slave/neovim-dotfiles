@@ -1,11 +1,11 @@
-return {
-  {
-    "chomosuke/typst-preview.nvim",
-    ft = { "typst" },
-    version = "1.*",
-    opts = {},
-    config = function(_, opts)
-      require("typst-preview").setup(opts)
-    end,
-  },
+local M = {}
+
+M.plugins = {
+  { repo = "chomosuke/typst-preview.nvim", version = "v1.4.2" },
 }
+
+function M.setup()
+  require("typst-preview").setup {}
+end
+
+return M

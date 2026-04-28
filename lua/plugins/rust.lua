@@ -1,18 +1,17 @@
-return {
-  "mrcjkb/rustaceanvim",
-  version = "^6",
-  ft = { "rust" },
-  config = function()
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    local ok, cmp_caps = pcall(require, "cmp_nvim_lsp")
-    if ok then
-      capabilities = cmp_caps.default_capabilities(capabilities)
-    end
+local M = {}
 
-    vim.g.rustaceanvim = {
-      server = {
-        capabilities = capabilities,
-      },
-    }
-  end,
+M.plugins = {
+  { repo = "mrcjkb/rustaceanvim", version = "v9.0.3" },
 }
+
+function M.setup()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+  vim.g.rustaceanvim = {
+    server = {
+      capabilities = capabilities,
+    },
+  }
+end
+
+return M

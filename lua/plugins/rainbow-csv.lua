@@ -1,7 +1,7 @@
 local M = {}
 
 M.plugins = {
-  "sindrets/diffview.nvim",
+  "mechatroner/rainbow_csv",
 }
 
 return M

@@ -1,7 +1,7 @@
 local M = {}
 
 M.plugins = {
-  "sindrets/diffview.nvim",
+  "nvim-lua/plenary.nvim",
 }
 
 return M

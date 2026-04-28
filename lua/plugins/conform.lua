@@ -1,6 +1,11 @@
-return {
+local M = {}
+
+M.plugins = {
   "stevearc/conform.nvim",
-  opts = {
+}
+
+function M.setup()
+  require("conform").setup {
     formatters = {
       ["clang-format"] = {
         prepend_args = {
@@ -28,5 +33,7 @@ return {
       end
       return { timeout_ms = 500, lsp_fallback = true }
     end,
-  },
-}
+  }
+end
+
+return M

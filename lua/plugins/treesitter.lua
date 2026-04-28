@@ -1,9 +1,23 @@
-return {
-  "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPre", "BufNewFile" },
-  cmd = { "TSInstall", "TSInstallFromGrammar", "TSUpdate" },
-  build = ":TSUpdate",
-  opts = {
+local M = {}
+
+M.plugins = {
+  { repo = "nvim-treesitter/nvim-treesitter", branch = "main" },
+}
+
+function M.setup()
+  vim.cmd "packadd nvim-treesitter"
+  local ok, treesitter = pcall(require, "nvim-treesitter")
+  if not ok then
+    if not vim.g.treesitter_missing_warned then
+      vim.g.treesitter_missing_warned = true
+      vim.schedule(function()
+        vim.notify("nvim-treesitter not available; run :lua vim.pack.update()", vim.log.levels.WARN)
+      end)
+    end
+    return
+  end
+
+  treesitter.setup {
     ensure_installed = {
       "lua", "luadoc", "vim", "vimdoc",
       "rust", "html", "bash", "css", "c", "markdown", "markdown_inline",
@@ -17,25 +31,17 @@ return {
     highlight = { enable = true, additional_vim_regex_highlighting = false },
     indent = { enable = true },
     incremental_selection = { enable = true },
-  },
+  }
 
-  config = function(_, opts)
-    local ok, configs = pcall(require, "nvim-treesitter.configs")
-    if not ok then
-      vim.schedule(function()
-        vim.notify("nvim-treesitter not available; run :Lazy sync", vim.log.levels.WARN)
-      end)
-      return
-    end
+  -- Note: nvim-treesitter main requires the tree-sitter CLI on your system.
 
-    configs.setup(opts)
+  -- Fallback: force-start treesitter for C-family buffers if needed.
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "c", "cpp", "objc", "objcpp" },
+    callback = function(args)
+      pcall(vim.treesitter.start, args.buf)
+    end,
+  })
+end
 
-    -- Fallback: force-start treesitter for C-family buffers if needed.
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = { "c", "cpp", "objc", "objcpp" },
-      callback = function(args)
-        pcall(vim.treesitter.start, args.buf)
-      end,
-    })
-  end,
-}
+return M

@@ -1,13 +1,5 @@
-local function ensure_loaded(names)
-  local ok, lazy = pcall(require, "lazy")
-  if not ok then return end
-  pcall(lazy.load, { plugins = names })
-end
-
 --global
 function _G.select_session_with_telescope()
-  ensure_loaded({ "folke/persistence.nvim", "nvim-telescope/telescope.nvim" })
-
   local ok, persistence = pcall(require, "persistence")
   if not ok then
     vim.notify("persistence.nvim not available", vim.log.levels.ERROR)
@@ -47,11 +39,14 @@ vim.api.nvim_create_user_command("SelectSession", function()
   _G.select_session_with_telescope()
 end, { desc = "Pick persistence session" })
 
-return {
+local M = {}
+
+M.plugins = {
   "folke/persistence.nvim",
-  event = "BufReadPre",
-  opts = { need = 2 },
-  config = function(_, opts)
-    require("persistence").setup(opts)
-  end,
 }
+
+function M.setup()
+  require("persistence").setup { need = 2 }
+end
+
+return M

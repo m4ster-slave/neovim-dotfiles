@@ -96,3 +96,5 @@ o.autoread = true    -- Automatically read files if they change outside of Vim
 o.foldmethod = "expr"
 o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 o.foldlevel = 99
+
+require('vim._core.ui2').enable({})
