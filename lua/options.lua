@@ -17,7 +17,6 @@ o.tabstop = 4
 o.softtabstop = 4
 o.linebreak = true -- Line break at word boundaries (if wrap is enabled)
 
-
 opt.fillchars = { eob = " " }
 o.ignorecase = true
 o.smartcase = true
@@ -27,11 +26,11 @@ o.mouse = "a"
 o.number = true
 o.numberwidth = 2
 o.ruler = true
-vim.opt.number = true         -- show absolute number
+vim.opt.number = true -- show absolute number
 vim.opt.relativenumber = true -- add numbers to each line on the left side
 
 -- disable nvim intro
-opt.shortmess:append "sI"
+opt.shortmess:append("sI")
 
 o.signcolumn = "yes"
 o.splitbelow = true
@@ -51,50 +50,45 @@ vim.g["loaded_perl_provider"] = 0
 vim.g["loaded_ruby_provider"] = 0
 
 -- add binaries installed by mason.nvim to path
-local is_windows = vim.fn.has "win32" ~= 0
+local is_windows = vim.fn.has("win32") ~= 0
 local path_sep = is_windows and ";" or ":"
 local extra_paths = {
-  vim.fn.stdpath "data" .. "/mason/bin",
-  vim.fn.expand "~/.cargo/bin",
+    vim.fn.stdpath("data") .. "/mason/bin",
+    vim.fn.expand("~/.cargo/bin"),
 }
 
 for _, path in ipairs(extra_paths) do
-  if vim.fn.isdirectory(path) == 1 and not vim.env.PATH:find(vim.pesc(path), 1, true) then
-    vim.env.PATH = path .. path_sep .. vim.env.PATH
-  end
+    if vim.fn.isdirectory(path) == 1 and not vim.env.PATH:find(vim.pesc(path), 1, true) then
+        vim.env.PATH = path .. path_sep .. vim.env.PATH
+    end
 end
 
-vim.filetype.add {
-  extension = {
-    hbs = "html",
-  },
-}
-
-vim.diagnostic.config({
-  virtual_text = false,
+vim.filetype.add({
+    extension = {
+        hbs = "html",
+    },
 })
 
+vim.diagnostic.config({
+    virtual_text = false,
+})
 
-o.hlsearch = true   -- Highlight search matches
-o.incsearch = true  -- Show matches as you type (incremental search)
+o.hlsearch = true -- Highlight search matches
+o.incsearch = true -- Show matches as you type (incremental search)
 o.ignorecase = true -- Case-insensitive search
-o.smartcase = true  -- Enable case-sensitive search if uppercase letters are used
+o.smartcase = true -- Enable case-sensitive search if uppercase letters are used
 
-
-
-o.scrolloff = 8     -- Keep 8 lines visible above/below the cursor
+o.scrolloff = 8 -- Keep 8 lines visible above/below the cursor
 o.sidescrolloff = 8 -- Keep 8 columns visible to the left/right of the cursor
 
-
-o.undolevels = 1000  -- Increase undo levels to allow deeper history
+o.undolevels = 1000 -- Increase undo levels to allow deeper history
 o.undoreload = 10000 -- Larger undo history when reloading files
 
-o.autoread = true    -- Automatically read files if they change outside of Vim
-
+o.autoread = true -- Automatically read files if they change outside of Vim
 
 -- folding workflow
 o.foldmethod = "expr"
 o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 o.foldlevel = 99
 
-require('vim._core.ui2').enable({})
+require("vim._core.ui2").enable({})

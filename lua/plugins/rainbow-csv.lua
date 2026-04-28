@@ -1,7 +1,7 @@
 local M = {}
 
 M.plugins = {
-  "mechatroner/rainbow_csv",
+    "mechatroner/rainbow_csv",
 }
 
 return M

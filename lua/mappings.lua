@@ -24,17 +24,17 @@ map("n", "<C-k>", "<C-w>k", { desc = "Switch Window up" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "File Copy whole" })
 
 map("n", "<leader>fm", function()
-  require("conform").format { lsp_fallback = true }
+    require("conform").format({ lsp_fallback = true })
 end, { desc = "Format Files" })
 
 map("n", "<leader>tf", function()
-  if vim.g.format_on_save == false then
-    vim.g.format_on_save = true
-    vim.notify("Format on save enabled", vim.log.levels.INFO)
-  else
-    vim.g.format_on_save = false
-    vim.notify("Format on save disabled", vim.log.levels.INFO)
-  end
+    if vim.g.format_on_save == false then
+        vim.g.format_on_save = true
+        vim.notify("Format on save enabled", vim.log.levels.INFO)
+    else
+        vim.g.format_on_save = false
+        vim.notify("Format on save disabled", vim.log.levels.INFO)
+    end
 end, { desc = "Toggle format on save" })
 
 -- global lsp mappings
@@ -58,10 +58,10 @@ map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "Telescope Git 
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope Find files" })
 map("n", "<leader>fq", "<cmd>Telescope diagnostics<cr>", { desc = "Telescope Open Project Diagnostics" })
 map(
-  "n",
-  "<leader>fa",
-  "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-  { desc = "Telescope Find all files" }
+    "n",
+    "<leader>fa",
+    "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
+    { desc = "Telescope Find all files" }
 )
 
 -- terminal
@@ -72,41 +72,41 @@ map("t", "<ESC>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "Whichkey all keymaps" })
 
 map("n", "<leader>wk", function()
-  vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
+    vim.cmd("WhichKey " .. vim.fn.input("WhichKey: "))
 end, { desc = "Whichkey query lookup" })
 
 -- Toggle LSP inlay hints (Neovim >= 0.10)
 map("n", "<leader>uh", function()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local api = vim.lsp.inlay_hint
-  local enabled = false
-  if api and api.is_enabled then
-    enabled = api.is_enabled(bufnr)
-  elseif api and api.is_enabled then
-    enabled = api.is_enabled(bufnr)
-  end
-  if api and api.enable then
-    api.enable(bufnr, not enabled)
-  elseif api then
-    -- older API shim
-    api(bufnr, not enabled)
-  end
+    local bufnr = vim.api.nvim_get_current_buf()
+    local api = vim.lsp.inlay_hint
+    local enabled = false
+    if api and api.is_enabled then
+        enabled = api.is_enabled(bufnr)
+    elseif api and api.is_enabled then
+        enabled = api.is_enabled(bufnr)
+    end
+    if api and api.enable then
+        api.enable(bufnr, not enabled)
+    elseif api then
+        -- older API shim
+        api(bufnr, not enabled)
+    end
 end, { desc = "Toggle Inlay Hints" })
 
 -- blankline
 map("n", "<leader>cc", function()
-  local config = { scope = {} }
-  config.scope.exclude = { language = {}, node_type = {} }
-  config.scope.include = { node_type = {} }
-  local node = require("ibl.scope").get(vim.api.nvim_get_current_buf(), config)
+    local config = { scope = {} }
+    config.scope.exclude = { language = {}, node_type = {} }
+    config.scope.include = { node_type = {} }
+    local node = require("ibl.scope").get(vim.api.nvim_get_current_buf(), config)
 
-  if node then
-    local start_row, _, end_row, _ = node:range()
-    if start_row ~= end_row then
-      vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start_row + 1, 0 })
-      vim.api.nvim_feedkeys("_", "n", true)
+    if node then
+        local start_row, _, end_row, _ = node:range()
+        if start_row ~= end_row then
+            vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start_row + 1, 0 })
+            vim.api.nvim_feedkeys("_", "n", true)
+        end
     end
-  end
 end, { desc = "Blankline Jump to current context" })
 
 --debugger
@@ -120,34 +120,17 @@ map("n", "<C-n>", "<cmd>Yazi toggle<CR>")
 vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>lt", function()
-  local cfg = vim.diagnostic.config()
-  vim.diagnostic.config {
-    virtual_text = not cfg.virtual_text,
-    virtual_lines = not cfg.virtual_lines,
-  }
+    local cfg = vim.diagnostic.config()
+    vim.diagnostic.config({
+        virtual_text = not cfg.virtual_text,
+        virtual_lines = not cfg.virtual_lines,
+    })
 end, { desc = "Toggle LSP virtual lines" })
 
 vim.keymap.set("n", "<leader>tpn", ":TypstPreview<CR>")
 vim.keymap.set("n", "<leader>tps", ":TypstPreviewStop<CR>")
 
-
-
 -- tab navigation
 map("n", "<leader>j", "<cmd>tabprevious<CR>")
 map("n", "<leader>k", "<cmd>tabnext<CR>")
 map("n", "<leader>n", "<cmd>tabnew<CR>")
-
-
--- load the session for the current directory
-map("n", "<leader>qs", function() require("persistence").load() end)
-
-map("n", "<leader>qS", ":SelectSession<CR>",
-  { desc = "Pick persistence session" })
-
-
-
--- load the last session
-map("n", "<leader>ql", function() require("persistence").load({ last = true }) end)
-
--- stop Persistence => session won't be saved on exit
-map("n", "<leader>qd", function() require("persistence").stop() end)
