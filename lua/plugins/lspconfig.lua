@@ -48,6 +48,14 @@ function M.setup()
     end
 
     local function root_dir(fname, patterns)
+        if type(fname) == "number" then
+            fname = vim.api.nvim_buf_get_name(fname)
+        end
+
+        if type(fname) ~= "string" or fname == "" then
+            return nil
+        end
+
         return vim.fs.root(fname, patterns) or vim.fs.dirname(fname)
     end
 
