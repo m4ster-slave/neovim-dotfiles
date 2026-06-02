@@ -148,6 +148,7 @@ function M.setup()
                 "--header-insertion-decorators",
                 "--function-arg-placeholders",
                 "--completion-style=detailed",
+                "--query-driver=/home/lukiana/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-*",
             },
             filetypes = { "c", "cpp", "objc", "objcpp" },
             root_dir = function(fname)
