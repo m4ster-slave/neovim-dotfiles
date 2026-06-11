@@ -37,7 +37,6 @@ function M.setup()
             "csharp_ls",
             "jdtls",
             "rust_analyzer",
-            "hls",
         },
     })
 
