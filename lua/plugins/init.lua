@@ -13,7 +13,7 @@ local modules = {
     "plugins.markdown",
     "plugins.nvim-web-devicons",
     "plugins.rainbow-delimiters",
-    "plugins.rust",
+    -- "plugins.rust",
     "plugins.statusline",
     "plugins.telescope",
     "plugins.treesitter",

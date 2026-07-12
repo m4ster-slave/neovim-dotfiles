@@ -10,8 +10,7 @@
     #set text(9pt)
     #grid(
       columns: (1fr, 1fr),
-      align(left)[#author],
-      align(right)[#date]
+      align(left)[#author], align(right)[#date],
     )
     #line(length: 100%, stroke: 0.5pt)
   ],
@@ -19,20 +18,24 @@
     #line(length: 100%, stroke: 0.5pt)
     #set text(9pt)
     #align(center)[#counter(page).display("1 / 1", both: true)]
-  ]
+  ],
 )
 
 // Text settings
 #set text(
   font: "New Computer Modern",
   size: 11pt,
-  lang: "de"
+  lang: "de",
 )
 
 #set par(
   justify: true,
   leading: 0.65em,
-  spacing: 1.2em
+  spacing: 1.2em,
+)
+
+#set quote(
+  block: true,
 )
 
 // Heading styles
@@ -43,7 +46,7 @@
     width: 100%,
     inset: 12pt,
     radius: 4pt,
-    [#it.body]
+    [#it.body],
   )
   #v(0.5em)
 ]

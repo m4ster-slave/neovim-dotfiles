@@ -10,6 +10,13 @@ function M.setup()
     vim.g.rustaceanvim = {
         server = {
             capabilities = capabilities,
+            ["rust-analyzer"] = {
+                check = { command = "clippy" }, -- or "check"
+            },
+        },
+        tools = {
+            -- if this key exists and is enabled, disable it
+            cargo_check = { enable = false },
         },
     }
 end
