@@ -20,6 +20,7 @@ local modules = {
     "plugins.typst",
     "plugins.which-key",
     "plugins.yazi",
+    "plugins.aerial",
 }
 
 local function to_src(repo)
