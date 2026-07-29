@@ -39,8 +39,6 @@ end, { desc = "Toggle format on save" })
 
 -- global lsp mappings
 map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Lsp floating diagnostics" })
-map("n", "[d", vim.diagnostic.goto_prev, { desc = "Lsp prev diagnostic" })
-map("n", "]d", vim.diagnostic.goto_next, { desc = "Lsp next diagnostic" })
 map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Lsp diagnostic loclist" })
 
 map("n", "<leader>b", "<cmd>enew<CR>", { desc = "Buffer New" })
@@ -118,13 +116,16 @@ map("n", "<C-n>", "<cmd>Yazi toggle<CR>")
 
 -- go to definition stuff
 vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>lt", function()
     local cfg = vim.diagnostic.config()
-    vim.diagnostic.config({
-        virtual_text = not cfg.virtual_text,
-        virtual_lines = not cfg.virtual_lines,
-    })
+    if cfg ~= nil then
+        vim.diagnostic.config({
+            virtual_text = not cfg.virtual_text,
+            virtual_lines = not cfg.virtual_lines,
+        })
+    end
 end, { desc = "Toggle LSP virtual lines" })
 
 vim.keymap.set("n", "<leader>tpn", ":TypstPreview<CR>")
