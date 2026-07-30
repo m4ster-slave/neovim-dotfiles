@@ -38,6 +38,9 @@ function M.setup()
             "jdtls",
             "rust_analyzer",
         },
+        automatic_enable = {
+            exclude = { "rust_analyzer" },
+        },
     })
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
