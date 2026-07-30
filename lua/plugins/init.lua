@@ -21,6 +21,9 @@ local modules = {
     "plugins.which-key",
     "plugins.yazi",
     "plugins.aerial",
+    "plugins.img-clip",
+    "plugins.hardtime",
+    "plugins.surround",
 }
 
 local function to_src(repo)
