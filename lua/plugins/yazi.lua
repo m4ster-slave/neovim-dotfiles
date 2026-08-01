@@ -2,7 +2,6 @@ local M = {}
 
 M.plugins = {
     "mikavilpas/yazi.nvim",
-    "folke/snacks.nvim",
 }
 
 function M.setup()

@@ -1,7 +1,7 @@
 local M = {}
 
 M.plugins = {
-    { repo = "chomosuke/typst-preview.nvim", version = "v1.4.2" },
+    "chomosuke/typst-preview.nvim",
 }
 
 function M.setup()

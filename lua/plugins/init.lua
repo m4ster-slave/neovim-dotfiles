@@ -8,7 +8,6 @@ local modules = {
     "plugins.debugger",
     "plugins.diffview",
     "plugins.gitsigns",
-    "plugins.indent-blankline",
     "plugins.lspconfig",
     "plugins.markdown",
     "plugins.nvim-web-devicons",
@@ -24,6 +23,8 @@ local modules = {
     "plugins.img-clip",
     "plugins.hardtime",
     "plugins.surround",
+    "plugins.persistance",
+    "plugins.snacks",
 }
 
 local function to_src(repo)
