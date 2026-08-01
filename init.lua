@@ -5,8 +5,6 @@ local plugins = require("plugins")
 vim.pack.add(plugins.packages)
 plugins.setup()
 
-vim.cmd("colorscheme rose-pine-moon")
-
 require("autocmds")
 require("options")
 

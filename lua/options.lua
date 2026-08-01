@@ -26,8 +26,7 @@ o.mouse = "a"
 o.number = true
 o.numberwidth = 2
 o.ruler = true
-vim.opt.number = true -- show absolute number
-vim.opt.relativenumber = true -- add numbers to each line on the left side
+opt.relativenumber = true -- add numbers to each line on the left side
 
 -- disable nvim intro
 opt.shortmess:append("sI")
@@ -70,7 +69,8 @@ vim.filetype.add({
 })
 
 vim.diagnostic.config({
-    virtual_text = false,
+    virtual_text = true,
+    virtual_lines = true,
 })
 
 o.hlsearch = true -- Highlight search matches

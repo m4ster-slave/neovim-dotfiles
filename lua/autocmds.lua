@@ -63,13 +63,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end,
 })
 
--- Disable inline virtual text and enable virtual lines
-vim.diagnostic.config({
-    virtual_text = true,
-    virtual_lines = true,
-})
-
-vim.cmd([[colorscheme tokyonight-moon]])
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
