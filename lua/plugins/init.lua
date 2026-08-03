@@ -25,6 +25,7 @@ local modules = {
     "plugins.surround",
     "plugins.persistance",
     "plugins.snacks",
+    "plugins.flash",
 }
 
 local function to_src(repo)
