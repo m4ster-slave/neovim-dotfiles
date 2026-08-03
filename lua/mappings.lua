@@ -135,3 +135,8 @@ vim.keymap.set("n", "<leader>tps", ":TypstPreviewStop<CR>")
 map("n", "<leader>j", "<cmd>tabprevious<CR>")
 map("n", "<leader>k", "<cmd>tabnext<CR>")
 map("n", "<leader>n", "<cmd>tabnew<CR>")
+
+map("n", "]q", "<cmd>cnext<CR>", { desc = "Quickfix next" })
+map("n", "[q", "<cmd>cprev<CR>", { desc = "Quickfix prev" })
+map("n", "]Q", "<cmd>clast<CR>", { desc = "Quickfix last" })
+map("n", "[Q", "<cmd>cfirst<CR>", { desc = "Quickfix first" })
