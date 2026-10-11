@@ -92,3 +92,7 @@ o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 o.foldlevel = 99
 
 require("vim._core.ui2").enable({})
+
+-- Spellchecker
+o.spelllang = "en_us"
+o.spell = true

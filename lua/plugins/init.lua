@@ -5,6 +5,7 @@ local modules = {
     "plugins.colorizer",
     "plugins.colorscheme",
     "plugins.conform",
+    "plugins.lint",
     "plugins.debugger",
     "plugins.diffview",
     "plugins.gitsigns",

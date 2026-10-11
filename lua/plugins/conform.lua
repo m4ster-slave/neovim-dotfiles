@@ -17,6 +17,7 @@ function M.setup()
             lua = { "stylua" },
             c = { "clang-format" },
             cpp = { "clang-format" },
+            java = { "google-java-format" },
             css = { "prettier" },
             html = { "prettier" },
             rust = { "rustfmt" },

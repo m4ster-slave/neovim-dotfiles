@@ -3,6 +3,7 @@ local M = {}
 M.plugins = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
     "neovim/nvim-lspconfig",
 }
 
@@ -39,8 +40,17 @@ function M.setup()
             "rust_analyzer",
         },
         automatic_enable = {
-            exclude = { "rust_analyzer" },
+            exclude = { "rust_analyzer", "jdtls" },
         },
+    })
+
+    require("mason-tool-installer").setup({
+        ensure_installed = {
+            "jdtls",
+            "google-java-format",
+            { "checkstyle", version = "checkstyle-10.21.4" },
+        },
+        run_on_start = true,
     })
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -69,6 +79,24 @@ function M.setup()
     local function python_path()
         local venv = vim.env.VIRTUAL_ENV
         return venv and (venv .. "/bin/python3") or "/usr/bin/python3"
+    end
+
+    local function jdtls_java()
+        local candidates = {
+            "/home/lukiana/.gradle/jdks/eclipse_adoptium-21-amd64-linux.2/bin/java",
+            "/usr/lib/jvm/java-25-openjdk/bin/java",
+            "/usr/lib/jvm/java-27-openjdk/bin/java",
+            "/usr/lib/jvm/java-21-openjdk-amd64/bin/java",
+            vim.env.JAVA_HOME and (vim.env.JAVA_HOME .. "/bin/java") or nil,
+        }
+
+        for _, candidate in ipairs(candidates) do
+            if candidate and vim.fn.filereadable(candidate) == 1 then
+                return candidate
+            end
+        end
+
+        return "java"
     end
 
     local servers = {
@@ -178,8 +206,18 @@ function M.setup()
             end,
         }),
         jdtls = with_capabilities({
+            cmd = { "jdtls", "--java-executable", jdtls_java() },
             root_dir = function(fname)
-                return root_dir(fname, { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" })
+                return root_dir(fname, {
+                    "settings.gradle",
+                    "settings.gradle.kts",
+                    "build.gradle",
+                    "build.gradle.kts",
+                    "pom.xml",
+                    "mvnw",
+                    "gradlew",
+                    ".git",
+                })
             end,
         }),
         tinymist = with_capabilities({
@@ -192,11 +230,13 @@ function M.setup()
 
     for name, cfg in pairs(servers) do
         vim.lsp.config(name, cfg)
-        local ok_enable, err = pcall(vim.lsp.enable, name)
-        if not ok_enable then
-            vim.schedule(function()
-                vim.notify(string.format("Skipping LSP '%s': %s", name, err), vim.log.levels.WARN)
-            end)
+        if name ~= "jdtls" then
+            local ok_enable, err = pcall(vim.lsp.enable, name)
+            if not ok_enable then
+                vim.schedule(function()
+                    vim.notify(string.format("Skipping LSP '%s': %s", name, err), vim.log.levels.WARN)
+                end)
+            end
         end
     end
 
@@ -214,6 +254,41 @@ function M.setup()
             vim.lsp.start(vim.tbl_deep_extend("force", {}, clangd_cfg, { bufnr = args.buf }))
         end,
     })
+
+    local function start_jdtls(bufnr)
+        if vim.b[bufnr].jdtls_starting or #vim.lsp.get_clients({ bufnr = bufnr, name = "jdtls" }) > 0 then
+            return
+        end
+
+        vim.b[bufnr].jdtls_starting = true
+        local filename = vim.api.nvim_buf_get_name(bufnr)
+        local config = servers.jdtls
+        vim.lsp.start(vim.tbl_deep_extend("force", {}, config, {
+            bufnr = bufnr,
+            root_dir = config.root_dir(filename),
+        }))
+    end
+
+    vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach" }, {
+        pattern = "*.java",
+        callback = function(args)
+            vim.b[args.buf].jdtls_starting = false
+        end,
+    })
+
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "java",
+        callback = function(args)
+            start_jdtls(args.buf)
+        end,
+    })
+
+    if vim.bo.filetype == "java" then
+        vim.schedule(function()
+            start_jdtls(0)
+        end)
+    end
+
 end
 
 return M
