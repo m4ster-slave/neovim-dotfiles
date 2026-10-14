@@ -7,7 +7,13 @@ o.showmode = false
 
 o.clipboard = "unnamedplus"
 o.cursorline = true
-o.cursorlineopt = "number"
+
+vim.opt.guicursor = {
+    "i-ci-ve:ver25-Cursor", -- Vertical bar in insert mode
+    "r-cr:hor20-Cursor", -- Horizontal bar in replace mode
+}
+
+vim.opt.cursorcolumn = true
 
 -- Indenting
 o.expandtab = true
