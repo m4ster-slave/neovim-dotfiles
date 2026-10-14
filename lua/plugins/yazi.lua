@@ -27,6 +27,31 @@ function M.setup()
             close = { "<Esc>", "q", "<c-n>" },
         },
         yazi_floating_window_winblend = 0,
+        open_file_function = function(chosen_file, config, state)
+            local ext = vim.fn.fnamemodify(chosen_file, ":e"):lower()
+
+            if
+                ext == "pdf"
+                or vim.tbl_contains({
+                    "png",
+                    "jpg",
+                    "jpeg",
+                    "gif",
+                    "webp",
+                    "svg",
+                    "bmp",
+                    "tif",
+                    "tiff",
+                    "avif",
+                }, ext)
+            then
+                vim.fn.jobstart({ "xdg-open", chosen_file }, {
+                    detach = true,
+                })
+            else
+                vim.cmd("edit " .. vim.fn.fnameescape(chosen_file))
+            end
+        end,
     })
 end
 
