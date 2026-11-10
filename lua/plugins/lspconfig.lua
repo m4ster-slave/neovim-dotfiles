@@ -15,6 +15,7 @@ function M.setup()
     require("mason-lspconfig").setup({
         ensure_installed = {
             "lua_ls",
+            "verible",
             "gopls",
             "templ",
             "html",
@@ -114,6 +115,16 @@ function M.setup()
                     telemetry = { enable = false },
                 },
             },
+        }),
+        verible = with_capabilities({
+            cmd = { "verible-verilog-ls" },
+            filetypes = { "systemverilog", "verilog" },
+            root_dir = function(fname)
+                return root_dir(fname, {
+                    "verible.filelist",
+                    ".git",
+                })
+            end,
         }),
         wgsl_analyzer = with_capabilities({}),
         jsonls = with_capabilities({}),
@@ -288,7 +299,6 @@ function M.setup()
             start_jdtls(0)
         end)
     end
-
 end
 
 return M
